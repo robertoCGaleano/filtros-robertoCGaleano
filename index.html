@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title>Paises</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="paises.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+      async function  inicializar() {
+        this.filtros = await new FiltroPaises();  
+        this.filtros.addFiltro('Sudamerica', (e) => e.subregion ==='South America');
+        const selectElement = document.getElementById('paises-select');
+        const filtrosDisponibles = this.filtros.getFiltros()
+        filtrosDisponibles.forEach( f => selectElement.add(new Option(f.name, f.name)));
+      }
+
+      function changeSelect(value) {
+          const preElement = document.getElementById('json');
+          const filteredData= this.filtros.aplicarFiltroConFormato(value)
+          preElement.innerText = JSON.stringify(filteredData, null, 2);
+      }
+
+      function incluyePoblacion(value) {
+        const selectElement = document.getElementById('paises-select');
+        this.filtros.setFormato(value)
+        changeSelect(selectElement.options[selectElement.selectedIndex].value)
+      }
+
+      window.onload =  inicializar;
+    </script>
+  </head>
+
+  <body>
+    <div>
+      <div>
+        <label for="paises-select">Filtros Disponibles:</label>
+        <select name="paises" id="paises-select" onChange="changeSelect(this.options[this.selectedIndex].value)">
+          <option value="">--Seleccione un Filtro--</option>
+        </select>
+        <input id="check_poblacion" type="checkbox" name="poblacion" value="" onclick="incluyePoblacion(this.checked)"/>
+        <label for="check_poblacion">Formato Incluye Poblacion</label>
+      </div>
+      </br>
+      <div>
+        <pre id="json"></pre>
+      </div>
+    </div>
+  </body>
+</html>
