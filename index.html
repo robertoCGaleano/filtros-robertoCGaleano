@@ -8,6 +8,23 @@
       async function  inicializar() {
         this.filtros = await new FiltroPaises();  
         this.filtros.addFiltro('Sudamerica', (e) => e.subregion ==='South America');
+
+        //filtros de prueba
+        this.filtros.addFiltro('Norteamerica', (e) => e.subregion ==='North America');
+        this.filtros.addFiltro('Africa', (e) => e.region ==='Africa');
+        this.filtros.addFiltro('Europa', (e) => e.region ==='Europe');
+        //filtro agregado paises con poblacion mayor a 100.000.000
+        this.filtros.addFiltro('Super Poblados', (e) => e.population > 100000000);
+        //fin de filtro consigna 1 ok
+
+        //filtro agregado paises que no tienen fronteras (borders)
+        this.filtros.addFiltro('Insulares', (e) => e.borders.len() > 0);
+        //fin de filtro consigna 2 a revisar
+
+        //filtro agregado paises que incluyen el Guarani entre sus idiomas
+        this.filtros.addFiltro('De habla Guarani', (e) => e.languages.includes('gnr'));
+        //fin de filtro consigna 3 a revisar
+
         const selectElement = document.getElementById('paises-select');
         const filtrosDisponibles = this.filtros.getFiltros()
         filtrosDisponibles.forEach( f => selectElement.add(new Option(f.name, f.name)));
